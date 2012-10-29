@@ -4,13 +4,9 @@ include_once("./_common.php");
 $g4['title'] = "쪽지5";
 
 include_once("$g4[path]/head.sub.php");
-
 include_once("$g4[path]/memo.config.php");
 
-// 쪽지 4 core 버젼
-$g4[memo_version] = "5.0.3";
-
-if (!$member[mb_id]) 
+if (!$member['mb_id']) 
     alert_close("회원만 이용하실 수 있습니다.\\n\\n회원이시라면 로그인 후 이용해 보십시오.");
 
 // 자동응답으로 설정되어 있는 경우에는 쪽지를 사용할 수 없습니다.
