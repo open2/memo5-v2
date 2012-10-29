@@ -20,7 +20,7 @@ if ($g4['mb_memo_call_datetime'] == "0000-00-00 00:00:00" || $member['mb_memo_un
     $sql = " select count(*) as cnt from $g4[memo_recv_table] 
               where me_recv_mb_id = '$member[mb_id]' and me_read_datetime = '0000-00-00 00:00:00' ";
     $row = sql_fetch($sql);
-    $total_count_recv_unread = $row[cnt];
+    $total_count_recv_unread = $row['cnt'];
     
     // 그리고 안읽은 쪽지 갯수를 g4_member db에 업데이트
     $sql = " update $g4[member_table] 
@@ -28,7 +28,7 @@ if ($g4['mb_memo_call_datetime'] == "0000-00-00 00:00:00" || $member['mb_memo_un
               where mb_id = '$member[mb_id]' ";
     sql_query($sql);
 } else {
-    $total_count_recv_unread = $member[mb_memo_unread];
+    $total_count_recv_unread = $member['mb_memo_unread'];
 }
 
 // 쪽지 title 설정하기
@@ -81,7 +81,7 @@ switch ($kind)
 
 // 글쓰기 할때, 친구관리 기능을 사용하려면
 if ($kind == "write") {
-    if ($config[cf_friend_management] == true) {
+    if ($config['cf_friend_management'] == true) {
         $my_friend = array();
         $sql = "select a.fr_id, b.mb_nick
                           from $g4[friend_table] a left join $g4[member_table] b on a.fr_id = b.mb_id 
@@ -141,23 +141,22 @@ switch ($kind) {
         }
         
         foreach ($addr as $row) {
-            $list[$row[mb_id]][$row[type]] = $row[cnt];
-            $list[$row[mb_id]]['mb_id'] = $row[mb_id];
-            if ($config[cf_memo_mb_name]) $row[mb_nick] = $row[mb_name];
-            $list[$row[mb_id]]['mb_nick'] = $row[mb_nick];
+            $list[$row['mb_id']][$row['type']] = $row['cnt'];
+            $list[$row['mb_id']]['mb_id'] = $row['mb_id'];
+            if ($config['cf_memo_mb_name']) $row['mb_nick'] = $row['mb_name'];
+            $list[$row['mb_id']]['mb_nick'] = $row['mb_nick'];
         
-            if ($row[mb_nick])
-                if ($config[cf_memo_mb_name])
-                    $mb_nick = $row[mb_name];
+            if ($row['mb_nick'])
+                if ($config['cf_memo_mb_name'])
+                    $mb_nick = $row['mb_name'];
                 else
-                    $mb_nick = $row[mb_nick];
+                    $mb_nick = $row['mb_nick'];
             else
                 $mb_nick = "<font color=silver>정보없음</font>";
-            $name = get_sideview($row[mb_id], $row[mb_nick], $row[mb_email], $row[mb_homepage]);
+            $name = get_sideview($row['mb_id'], $row['mb_nick'], $row['mb_email'], $row['mb_homepage']);
 
-            $list[$row[mb_id]]['name'] = $name;
+            $list[$row['mb_id']]['name'] = $name;
         }
-
         break;
         
     case 'write'  : // 쪽지보내기
