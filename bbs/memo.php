@@ -31,10 +31,6 @@ if ($g4['mb_memo_call_datetime'] == "0000-00-00 00:00:00" || $member['mb_memo_un
     $total_count_recv_unread = $member[mb_memo_unread];
 }
 
-// 변수 초기화 
-$kind = strip_tags($kind);
-$me_id = (int) $me_id;
-    
 // 쪽지 title 설정하기
 switch ($kind) 
 { 
