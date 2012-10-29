@@ -61,17 +61,11 @@ switch ($kind)
     case 'save' : // 저장함 (수신/발신 모두 쪽지 저장이 가능)
                   $memo_title = "보관한쪽지함";
                   break;
-    case 'temp' : // 임시저장함 (작성중인 쪽지를 임시로 저장)
-                  $memo_title = "작성중인쪽지함";
-                  break;
     case 'trash': // 휴지통 
                   $memo_title = "삭제한쪽지함";
                   break;
     case 'club' : // 클럽함 - 내가 가입한 클럽의 쪽지들은 이곳으로
                   $memo_title = "카페쪽지함";
-                  break;
-    case 'ads'  : // 홍보함
-                  $memo_title = "홍보쪽지함";
                   break;
     case 'notice' : // 공지쪽지함
                   $memo_title = "공지쪽지함";
@@ -278,10 +272,8 @@ break;
     case 'recv'   : // 수신함
     case 'send'   : // 발신함
     case 'save'   : // 저장함 (수신/발신 모두 쪽지 저장이 가능)
-    case 'temp'   : // 임시저장 저장함 (작성중인 쪽지를 임시로 저장)
     case 'trash'  : // 휴지통
     case 'club'   : // 클럽함 - 내가 가입한 클럽의 쪽지들은 이곳으로
-    case 'ads'    : // 홍보함
     case 'notice' : // 공지쪽지함
     case 'spam'   : // 스팸함 (수신한 것만 스팸함으로)
 
@@ -309,13 +301,6 @@ break;
                 $sql_after = " select min(me_id) as after_id from $g4[memo_save_table] where memo_owner = '$member[mb_id]' and me_id > '$me_id' "; 
             }
             break;
-        case 'temp' : 
-            $sql = " select $memo_select, me_from_kind from $g4[memo_temp_table] where memo_owner = '$member[mb_id]' and me_id = '$me_id' "; 
-            if ($config[cf_memo_before_after]) {
-                $sql_before = "";
-                $sql_after = "";
-            }
-            break;
         case 'trash' : 
             $sql = " select $memo_select, me_from_kind from $g4[memo_trash_table] where me_id = '$me_id' "; 
             if ($config[cf_memo_before_after]) {
@@ -328,13 +313,6 @@ break;
             $sql = " select * from $g4[memo_cafe_table] where me_id = '$me_id' "; 
             break; 
         */
-        case 'ads'  : 
-            $sql = " select * from $g4[memo_ads_table] where me_id = '$me_id' "; 
-            if ($config[cf_memo_before_after]) {
-                $sql_before = " select max(me_id) as before_id from $g4[memo_ads_table] where me_id < '$me_id' "; 
-                $sql_after = " select min(me_id) as after_id from $g4[memo_ads_table] where me_id > '$me_id' "; 
-            }
-            break;
         case 'notice' : 
             $sql = " select $memo_select from $g4[memo_notice_table] where me_id = '$me_id' "; 
             if ($config[cf_memo_before_after]) {
@@ -536,11 +514,6 @@ break;
                                   from $g4[memo_save_table]
                                   where memo_owner = '$member[mb_id]' $sql_search  ";
                       break;
-        case 'temp' : // 임시저장함 (작성중인 쪽지를 임시로 저장)
-                      $sql = " select count(*) as cnt 
-                                  from $g4[memo_temp_table]
-                                  where memo_owner = '$member[mb_id]' $sql_search ";
-                      break;
         case 'trash': // 휴지통
                       $sql = " select count(*) as cnt 
                                   from $g4[memo_trash_table]
@@ -552,10 +525,6 @@ break;
                                   from $g4[memo_cafe_table] ";
                       break;
         */
-        case 'ads'  : // 홍보함
-                      $sql = " select count(*) as cnt 
-                                  from $g4[memo_ads_table] ";
-                      break; 
         case 'notice' : // 전체쪽지함
                       $sql = " select count(*) as cnt 
                                   from $g4[memo_notice_table] 
@@ -620,13 +589,6 @@ break;
                                  $order_by 
                                  limit $from_record, $one_rows";
                       break;
-        case 'temp' : // 임시저장함 (작성중인 쪽지를 임시로 저장)
-                      $sql = " select $select_sql, memo_type
-                                 from $g4[memo_temp_table]
-                                 where memo_owner = '$member[mb_id]' $sql_search
-                                 $order_by 
-                                 limit $from_record, $one_rows";
-                      break;
         case 'trash': // 휴지통
                       $sql = " select $select_sql, memo_type
                                  from $g4[memo_trash_table]
@@ -641,13 +603,6 @@ break;
                                       left join $g4[member_table] b on (a.me_save_mb_id = b.mb_id) ";
                       break;
         */
-        case 'ads'  : // 홍보함
-                      $sql = " select $select_sql
-                                 from $g4[memo_ads_table]
-                                 where 1 $sql_search 
-                                 order by me_id desc 
-                                 limit $from_record, $one_rows";
-                      break;
         case 'notice' : // 전체쪽지함
                       $sql = " select $select_sql
                                  from $g4[memo_notice_table] a left join $g4[member_table] b on ( a.me_send_mb_id = b.mb_id )
