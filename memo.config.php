@@ -89,7 +89,7 @@ if (isset($me_id)) {
     $me_id = (int) $me_id;
 }
 
-if ($kind) {
+if (isset($kind)) {
     $kind = preg_match("/^[a-zA-Z0-9_]+$/", $kind) ? $kind : "";
 }
 
