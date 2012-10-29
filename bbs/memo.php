@@ -64,9 +64,6 @@ switch ($kind)
     case 'trash': // 휴지통 
                   $memo_title = "삭제한쪽지함";
                   break;
-    case 'club' : // 클럽함 - 내가 가입한 클럽의 쪽지들은 이곳으로
-                  $memo_title = "카페쪽지함";
-                  break;
     case 'notice' : // 공지쪽지함
                   $memo_title = "공지쪽지함";
                   break; 
@@ -273,7 +270,6 @@ break;
     case 'send'   : // 발신함
     case 'save'   : // 저장함 (수신/발신 모두 쪽지 저장이 가능)
     case 'trash'  : // 휴지통
-    case 'club'   : // 클럽함 - 내가 가입한 클럽의 쪽지들은 이곳으로
     case 'notice' : // 공지쪽지함
     case 'spam'   : // 스팸함 (수신한 것만 스팸함으로)
 
@@ -308,11 +304,6 @@ break;
                 $sql_after = " select min(me_id) as after_id from $g4[memo_notice_table] where me_id > '$me_id' "; 
             }
             break;
-        /*
-        case 'club' : // 클럽은 읽기 조건의 추가제한이 필요함 (내가 참여한 클럽?)
-            $sql = " select * from $g4[memo_cafe_table] where me_id = '$me_id' "; 
-            break; 
-        */
         case 'notice' : 
             $sql = " select $memo_select from $g4[memo_notice_table] where me_id = '$me_id' "; 
             if ($config[cf_memo_before_after]) {
@@ -519,12 +510,6 @@ break;
                                   from $g4[memo_trash_table]
                                   where memo_owner = '$member[mb_id]' $sql_search ";
                       break;
-        /*
-        case 'club' : // 클럽함 - 내가 가입한 클럽의 쪽지만 가져옴
-                      $sql = " select count(*) as cnt 
-                                  from $g4[memo_cafe_table] ";
-                      break;
-        */
         case 'notice' : // 전체쪽지함
                       $sql = " select count(*) as cnt 
                                   from $g4[memo_notice_table] 
@@ -596,13 +581,6 @@ break;
                                  $order_by 
                                  limit $from_record, $one_rows";
                       break;
-        /*
-        case 'club' : // 클럽함 - 내가 가입한 클럽의 쪽지만 가져옴
-                      $sql = " select a.*, b.mb_id, a.memo_type, b.mb_nick, b.mb_email, b.mb_homepage 
-                                 from $g4[memo_save_table] a 
-                                      left join $g4[member_table] b on (a.me_save_mb_id = b.mb_id) ";
-                      break;
-        */
         case 'notice' : // 전체쪽지함
                       $sql = " select $select_sql
                                  from $g4[memo_notice_table] a left join $g4[member_table] b on ( a.me_send_mb_id = b.mb_id )
