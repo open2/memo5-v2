@@ -79,23 +79,38 @@ switch ($kind)
                   break;
 }
 
-// 글쓰기 할때, 친구관리 기능을 사용하려면
-if ($kind == "write" && $config['cf_friend_management'] == true) {
+// 글쓰기 할때
+if ($kind == "write") {
 
-    // join을 하지 않고, loop를 돌린다. 그게 가장 빠르다.
-    $sql = " select fr_id from $g4[friend_table] where mb_id = '$member[mb_id]' ";
-    $qry = sql_query($sql);
+    // 친구관리 기능을 사용하려면
+    if ( && $config['cf_friend_management'] == true) {
 
-    $my_friend = array();
-    $i = 0;
+        // join을 하지 않고, loop를 돌린다. 그게 가장 빠르다.
+        $sql = " select fr_id from $g4[friend_table] where mb_id = '$member[mb_id]' ";
+        $qry = sql_query($sql);
 
-    while ($row = sql_fetch_array($qry))
-    {
-        $mb = get_member($row['fr_id'], "mb_nick");
-        $my_friend[$i]['mb_nick'] = $mb['mb_nick'];
-        $my_friend[$i]['fr_id'] = $row['fr_id'];
-        $i++;
-   }
+        $my_friend = array();
+        $i = 0;
+
+        while ($row = sql_fetch_array($qry))
+        {
+            $mb = get_member($row['fr_id'], "mb_nick");
+            $my_friend[$i]['mb_nick'] = $mb['mb_nick'];
+            $my_friend[$i]['fr_id'] = $row['fr_id'];
+            $i++;
+       }
+    }
+
+    // 스패머를 위한 장치를 합니다
+    $delay = $_SESSION['sm_datetime2'] - $g4['server_time'] + $g4['memo_delay_sec'];
+    if ($delay > 0 && !$is_admin) 
+        alert("너무 빠른 시간내에 쪽지를 연속해서 보낼 수 없습니다.");
+    set_session("sm_datetime2", $g4['server_time']);
+
+    // 하나의 아이디로 세션을 다르게 하는 넘들을 위해서 쿠키도 같이 씁니다.
+    if (get_cookie("cm_datetime2") >= ($g4['server_time'] - $g4['memo_delay_sec']) && !$is_admin) 
+        alert("너무 빠른 시간내에 쪽지를 연속해서 보낼 수 없습니다.");
+    @set_cookie("cm_datetime2", "$g4[server_time]", 86400) ;
 }
 
 // kind에 따라서 action~!!!
@@ -692,23 +707,6 @@ break;
     
     } // end of if ($class)
 } // end of switch($kind)
-
-// 쪽지쓰기인 경우 스패머를 위한 장치를 합니다
-if ($kind == "write") {
-
-    $delay = $_SESSION["sm_datetime2"] - $g4[server_time] + $g4[memo_delay_sec];
-    if ($delay > 0 && !$is_admin) 
-        alert("너무 빠른 시간내에 쪽지를 연속해서 보낼 수 없습니다.");
-
-    set_session("sm_datetime2", $g4[server_time]);
-
-    // 하나의 아이디로 세션을 다르게 하는 넘들을 위해서 쿠키도 같이 씁니다.
-    if (get_cookie("cm_datetime2") >= ($g4[server_time] - $g4[memo_delay_sec]) && !$is_admin) 
-        alert("너무 빠른 시간내에 쪽지를 연속해서 보낼 수 없습니다.");
-
-    @set_cookie("cm_datetime2", "$g4[server_time]", 86400) ;
-
-}
 
 // 쪽지5 스킨을 읽어들입니다.
 include_once("$memo_skin_path/memo2.skin.php");
