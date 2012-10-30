@@ -552,7 +552,7 @@ break;
     
         // 선택한 메일박스의 전체 메일 갯수
         $row = sql_fetch($sql);
-        $total_count = $row[cnt];
+        $total_count = $row['cnt'];
     
         // 안읽은 메일일 경우에는 전체 메일 갯수를 업데이트 - 굳이 안해도 될거 같지만, 있는 정보니까 써보는거야.
         if ($kind == "recv" && $unread == "only") {
@@ -640,24 +640,24 @@ break;
         
             switch ($kind) { // 쪽지 목록에 보이는 아이디를 지정
                 case 'send' : // 발신함
-                              $kind_mb_id = get_member($row[me_recv_mb_id], "mb_id, mb_name, mb_nick, mb_email, mb_homepage");
+                              $kind_mb_id = get_member($row['me_recv_mb_id'], "mb_id, mb_name, mb_nick, mb_email, mb_homepage");
                               $list_title = "받는사람";
                               break;
                 default : 
-                              $kind_mb_id = get_member($row[me_send_mb_id], "mb_id, mb_name, mb_nick, mb_email, mb_homepage");
+                              $kind_mb_id = get_member($row['me_send_mb_id'], "mb_id, mb_name, mb_nick, mb_email, mb_homepage");
                               $list_title = "보낸사람";
             }
         
-             if ($config[cf_memo_mb_name]) $kind_mb_id[mb_nick] = $kind_mb_id[mb_name];
-             $row[mb_nick] = $kind_mb_id[mb_nick];
-             $row[mb_id] = $kind_mb_id[mb_id];
-             $row[mb_email] = $kind_mb_id[mb_email];
-             $row[mb_homepage] = $kind_mb_id[mb_homepage];
+             if ($config['cf_memo_mb_name']) $kind_mb_id['mb_nick'] = $kind_mb_id['mb_name'];
+             $row['mb_nick'] = $kind_mb_id['mb_nick'];
+             $row['mb_id'] = $kind_mb_id['mb_id'];
+             $row['mb_email'] = $kind_mb_id['mb_email'];
+             $row['mb_homepage'] = $kind_mb_id['mb_homepage'];
             
-            $name = get_sideview($row[mb_id], $row[mb_nick], $row[mb_email], $row[mb_homepage]);
+            $name = get_sideview($row['mb_id'], $row['mb_nick'], $row['mb_email'], $row['mb_homepage']);
         
             // 당일인 경우 시간으로 표시함 (읽은시간)
-            if (substr($row[me_read_datetime],0,1) == '0') {
+            if (substr($row['me_read_datetime'],0,1) == '0') {
                 // 발신함의 안읽은 글의 경우 수신않음(수신후 로그인 기록 있는지 여부)를 위해 회원 정보 더 가져와야함
                 if ($kind == "send") {
                     $mb = get_member($row[me_recv_mb_id], "mb_today_login");
@@ -697,11 +697,12 @@ break;
     
             $list[$i][read_datetime] = $read_datetime;
             $list[$i][send_datetime] = $send_datetime;
+
             $list[$i][view_href] = "./memo.php?me_id=$row[me_id]&kind=$kind&class=view";
-    
             // 휴지통의 경우에는 게시글의 출처를 표시
             if ($kind == "trash")
                 $list[$i][view_href] = $list[$i][view_href] . "&me_from_kind=$row[me_from_kind]";
+
             $list[$i][me_file] = $row[me_file_local];
         } // end of for loop
     
