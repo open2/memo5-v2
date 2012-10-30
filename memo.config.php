@@ -39,29 +39,29 @@ if (function_exists('sql_fetch')) {
 
         // array_merge가 이상하게 동작하는 웹서버가 있어서, 설정값을 한개씩 넣게 수정함
         // $config = array_merge($config, $memo_config);
-        $config[cf_memo_page_rows]        = $memo_config[cf_memo_page_rows];
-        $config[cf_memo_del_unread]       = $memo_config[cf_memo_del_unread];
-        $config[cf_memo_del_trash]        = $memo_config[cf_memo_del_trash];
-        $config[cf_memo_delete_datetime]  = $memo_config[cf_memo_delete_datetime];
-        $config[cf_memo_user_dhtml]       = $memo_config[cf_memo_user_dhtml];
-        $config[cf_memo_use_file]         = $memo_config[cf_memo_use_file];
-        $config[cf_memo_file_size]        = $memo_config[cf_memo_file_size];
-        $config[cf_max_memo_file_size]    = $memo_config[cf_max_memo_file_size];    // 업로드 파일 용량
-        $config[cf_friend_management]     = $memo_config[cf_friend_management];
-        $config[cf_memo_no_reply]         = $memo_config[cf_memo_no_reply];
-        $config[cf_memo_notice_board]     = $memo_config[cf_memo_notice_board];
-        $config[cf_memo_notice_memo]      = $memo_config[cf_memo_notice_memo];
-        $config[cf_memo_before_after]     = $memo_config[cf_memo_before_after];
-        $config[cf_memo_print]            = $memo_config[cf_memo_print];
-        $config[cf_memo_b4_resize]        = $memo_config[cf_memo_b4_resize];
-        $config[cf_memo_realtime]         = $memo_config[cf_memo_realtime];         // 실시간 메모
-        $config[cf_memo_mb_name]          = $memo_config[cf_memo_mb_name];          // 실명 사용
+        $config['cf_memo_page_rows']        = $memo_config['cf_memo_page_rows'];
+        $config['cf_memo_del_unread']       = $memo_config['cf_memo_del_unread'];
+        $config['cf_memo_del_trash']        = $memo_config['cf_memo_del_trash'];
+        $config['cf_memo_delete_datetime']  = $memo_config['cf_memo_delete_datetime'];
+        $config['cf_memo_user_dhtml']       = $memo_config['cf_memo_user_dhtml'];
+        $config['cf_memo_use_file']         = $memo_config['cf_memo_use_file'];
+        $config['cf_memo_file_size']        = $memo_config['cf_memo_file_size'];
+        $config['cf_max_memo_file_size']    = $memo_config['cf_max_memo_file_size'];    // 업로드 파일 용량
+        $config['cf_friend_management']     = $memo_config['cf_friend_management'];
+        $config['cf_memo_no_reply']         = $memo_config['cf_memo_no_reply'];
+        $config['cf_memo_notice_board']     = $memo_config['cf_memo_notice_board'];
+        $config['cf_memo_notice_memo']      = $memo_config['cf_memo_notice_memo'];
+        $config['cf_memo_before_after']     = $memo_config['cf_memo_before_after'];
+        $config['cf_memo_print']            = $memo_config['cf_memo_print'];
+        $config['cf_memo_b4_resize']        = $memo_config['cf_memo_b4_resize'];
+        $config['cf_memo_realtime']         = $memo_config['cf_memo_realtime'];         // 실시간 메모
+        $config['cf_memo_mb_name']          = $memo_config['cf_memo_mb_name'];          // 실명 사용
 
     }
 }
 
 // 쪽지 첨부파일 경로
-$memo_file_path = $g4['path'] . "/data/memo2/" . $member[mb_id]; 
+$memo_file_path = $g4['path'] . "/data/memo2/" . $member['mb_id']; 
 
 // 쪽지 스킨 경로 지정
 $memo_skin_path = "$g4[path]/skin/member/$config[cf_member_skin]";
@@ -70,8 +70,8 @@ $memo_skin_path = "$g4[path]/skin/member/$config[cf_member_skin]";
 $memo_url = $g4[bbs_path] . "/memo.php";
 
 // 사용자의 환경설정은 실시간쪽지, 부재중 응답이 가능할 때만
-if ($config[cf_memo_realtime] || $config['cf_memo_no_reply'])
-    $config[cf_memo_user_config] = 1;
+if ($config['cf_memo_realtime'] || $config['cf_memo_no_reply'])
+    $config['cf_memo_user_config'] = 1;
 
 // 쪽지4에서의 dhtml 편집기 사용 설정
 $is_dhtml_editor = $config['cf_memo_user_dhtml']; 
