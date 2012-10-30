@@ -252,14 +252,6 @@
 				          <a href="#" onclick="tmpFileChk();">삭제하기</a>
               </td>
             </tr>
-<!--
-            <tr>
-              <td width="14" height="25"></td>
-              <td width="150">공지게시판</td>
-              <td><input type=text class=ed name='cf_memo_notice_board' size='16' itemname='쪽지 공지게시판' value='<?=$config[cf_memo_notice_board]?>'> (bo_table 값을 입력해주세요)</td>
-              </td>
-            </tr>
--->
           </table></td>
           <td background="<?=$memo_skin_path?>/img/memo_line2_right.gif">&nbsp;</td>
         </tr>
