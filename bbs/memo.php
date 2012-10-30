@@ -83,7 +83,7 @@ switch ($kind)
 if ($kind == "write") {
 
     // 친구관리 기능을 사용하려면
-    if ( && $config['cf_friend_management'] == true) {
+    if ($config['cf_friend_management'] == true) {
 
         // join을 하지 않고, loop를 돌린다. 그게 가장 빠르다.
         $sql = " select fr_id from $g4[friend_table] where mb_id = '$member[mb_id]' ";
