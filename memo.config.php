@@ -7,11 +7,9 @@ $g4['memo_config_table']          = $g4['table_prefix'] . "memo_config";        
 $g4['memo_recv_table']            = $g4['table_prefix'] . "memo_recv";            // 메모 테이블 (수신)
 $g4['memo_send_table']            = $g4['table_prefix'] . "memo_send";            // 메모 테이블 (발신)
 $g4['memo_save_table']            = $g4['table_prefix'] . "memo_save";            // 메모 테이블 (저장)
-$g4['memo_temp_table']            = $g4['table_prefix'] . "memo_temp";            // 메모 테이블 (임시저장)
 $g4['memo_spam_table']            = $g4['table_prefix'] . "memo_spam";            // 메모 테이블 (스팸)
 $g4['memo_notice_table']          = $g4['table_prefix'] . "memo_notice";          // 메모 테이블 (공지)
 $g4['memo_trash_table']           = $g4['table_prefix'] . "memo_trash";           // 메모 테이블 (휴지통)
-$g4['memo_club_table']            = $g4['table_prefix'] . "memo_club";            // 메모 테이블 (클럽)
 
 $g4['memo_group_table']           = $g4['table_prefix'] . "memo_group";           // 메모 테이블 (그룹)
 $g4['memo_group_member_table']    = $g4['table_prefix'] . "memo_group_member";    // 메모 테이블 (그룹멤버)
