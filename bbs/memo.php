@@ -80,18 +80,22 @@ switch ($kind)
 }
 
 // 글쓰기 할때, 친구관리 기능을 사용하려면
-if ($kind == "write") {
-    if ($config['cf_friend_management'] == true) {
-        $my_friend = array();
-        $sql = "select a.fr_id, b.mb_nick
-                          from $g4[friend_table] a left join $g4[member_table] b on a.fr_id = b.mb_id 
-                          where a.mb_id = '$member[mb_id]'";
-        $qry = sql_query($sql);
-        while ($row = sql_fetch_array($qry))
-        {
-            $my_friend[] = $row;
-        }
-    }
+if ($kind == "write" && $config['cf_friend_management'] == true) {
+
+    // join을 하지 않고, loop를 돌린다. 그게 가장 빠르다.
+    $sql = " select fr_id from $g4[friend_table] where mb_id = '$member[mb_id]' ";
+    $qry = sql_query($sql);
+
+    $my_friend = array();
+    $i = 0;
+
+    while ($row = sql_fetch_array($qry))
+    {
+        $mb = get_member($row['fr_id'], "mb_nick");
+        $my_friend[$i]['mb_nick'] = $mb['mb_nick'];
+        $my_friend[$i]['fr_id'] = $row['fr_id'];
+        $i++;
+   }
 }
 
 // kind에 따라서 action~!!!
