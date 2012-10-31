@@ -52,9 +52,7 @@
     <tr>
         <th>
         <!-- 공지쪽지함은 삭제 선택이 없게... -->
-        <? if ($kind != 'notice') { ?>
         <input name="chk_me_id_all" type="checkbox" onclick="if (this.checked) all_checked(true); else all_checked(false);" />
-        <? } ?>
         </th>
         <th></th>
         <th><?=$list_title ?></th>
@@ -89,11 +87,12 @@
     </tr>
     <? } ?>
     <? if ($i==0) { ?>
-    <tr colspan=5>
-        <td align=center height=100>자료가 없습니다.</td>
+    <tr>
+        <td align=center height=100 colspan=6>자료가 없습니다.</td>
     </tr>
     <? } ?>
-    <tfoot hegiht=50>
+    <tfoot>
+    <tr>
         <td colspan=6 align=left>
           &nbsp;&nbsp;
           <? if ($i > 0 and $kind !='notice') { ?>
@@ -108,6 +107,27 @@
         echo "$page";
         ?>
         </td>
+    </tr>
+    <?
+    // 하단부에 내보내는 기본 정보사항
+    $msg = "";
+    if ($kind == "write") { // 쓰기 일때만 메시지를 출력 합니다.
+        $msg .= "<li>여러명에게 쪽지 발송시 컴마(,)로 구분 합니다.";
+        if ($config['cf_memo_use_file'] && $config['cf_memo_file_size']) {
+            $msg .= "<li>첨부가능한 파일의 최대 용량은 " .$config['cf_memo_file_size'] . "M(메가) 입니다.";
+        }
+        if ($config['cf_memo_send_point']) 
+            $msg .= "<li>쪽지 보낼때 회원당 ".number_format($config['cf_memo_send_point'])."점의 포인트를 차감합니다.";
+    }
+    if ($kind == "send") { // 보낸쪽지함 일때만 메시지를 출력 합니다.
+        $msg .= "<li>읽지 않은 쪽지를 삭제하면, 발신이 취소(수신자 쪽지함에서 삭제) 됩니다.";
+    }
+    if ($kind == "send" || $kind == "recv") { // 보낸쪽지함 일때만 메시지를 출력 합니다.
+        $msg .= "<li>보관하지 않은 쪽지는 " . $config[cf_memo_del] . "일 후 삭제되므로 중요한 쪽지는 보관하시기 바랍니다.";
+    }
+    if ($msg !== "")
+        echo "<tr><td colspan=6 align=left><ul>$msg</ul><td></tr>";
+    ?>
     </tfoot>
 </table>
 </form>
