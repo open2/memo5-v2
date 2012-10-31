@@ -1,33 +1,35 @@
 <?
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
 
-// 쪽지 - 기본적인 사항 정의
-$table_width           = 680;                   // 100%로 설정을 하면 윈도가 떠오를 때 크기 지정을 깜박하시는 분이 있어요.
-$left_menu_width       = 164;                   // 왼쪽 메뉴의 폭
-$content_width         = 495;                   // 쪽지 내용창의 폭
-$content_inner_width   = 494;                   // 쪽지 내용창 안쪽의 최대 폭
-$max_img_width          = $content_width - 50;  // 이미지의 폭
+// 쪽지 - 기본적인 창의 크기를 정의
+$config['memo_width'] = 730;
+$config['memo_height'] = 600;
+
+// 쪽지 테이블의 기본을 정의
+$table_width           = $config['memo_width'];   // 10(죄측여백)+$left_menu_width(좌측메뉴)+ 10(쪽지목록과 메뉴사이 여백) + 내용 + 10(우측여백)
+$left_menu_width       = 194;                                   // 왼쪽 메뉴의 폭
+$content_width         = $table_width - $left_menu_width - 30;  // 쪽지 내용창의 폭
+$content_inner_width   = $content_width - 1;                    // 쪽지 내용창 안쪽의 최대 폭
+$max_img_width         = $content_width - 50;                   // 이미지의 폭
 
 // resize를 위한 넓이를 지정
 $board['resize_img_width'] = $max_img_width;
 ?>
 
-<link rel="stylesheet" href="<?=$memo_skin_path?>/memo2.css" type="text/css">
+<!-- http://html.nhndesign.com/uio_factory -->
+<link rel="stylesheet" href="<?=$memo_skin_path?>/memo2.css?v19" type="text/css">
 
 <!-- sideview를 위해서 -->
 <script type='text/javascript' src='<?=$g4[path]?>/js/sideview.js'></script>
 
 <!-- 상단부 여백 설정하기 -->
 <table border="0" cellspacing="0" cellpadding="0"><tr><td height="10"></td></tr></table>
-</table>
-
-
 
 <!-- 메뉴영역 -->
 <table width=<?=$table_width?> border="0" cellspacing="0" cellpadding="0"> 
-
 <tr valign=top>
     <td width=10></td> <!-- 좌측의 여백 설정하기 -->
+
     <td width=<?=$left_menu_width?>> <!-- 좌측 메뉴 -->
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
@@ -69,13 +71,6 @@ $board['resize_img_width'] = $max_img_width;
                 <td align="center"><img src="<?=$memo_skin_path?>/img/memo_icon04.gif" width="3" height="3" /></td>
                 <td height="25"><strong><a href='<?=$memo_url?>?kind=notice'>공지쪽지함</a>
                 </tr>
-<!--
-              <tr><td height="1" colspan="2" bgcolor="e1e1e1"></td></tr>
-              <tr>
-                <td align="center"><img src="<?=$memo_skin_path?>/img/memo_icon02.gif" width="3" height="3" /></td>
-                <td height="25"><strong><a href='<?=$memo_url?>?kind=temp'>작성중인쪽지함</a></strong></td>
-              </tr>
--->
               <tr>
                 <td height="1" colspan="2" bgcolor="e1e1e1"></td>
               </tr>
@@ -83,16 +78,6 @@ $board['resize_img_width'] = $max_img_width;
                 <td align="center"><img src="<?=$memo_skin_path?>/img/co_btn_delete.gif" width="3" height="3" /></td>
                 <td height="25"><strong><a href='<?=$memo_url?>?kind=trash'>삭제한쪽지함</a></strong></td>
               </tr>
-<!--
-              <tr><td height="1" colspan="2" bgcolor="e1e1e1"></td></tr>
-              <tr>
-                <td align="center"><img src="<?=$memo_skin_path?>/img/memo_icon04.gif" width="3" height="3" /></td>
-                <td height="25"><a href='<?=$memo_url?>?kind=cafe'>카페쪽지함</a></td>
-              </tr>
-              <tr>
-                <td height="1" colspan="2" bgcolor="e1e1e1"></td>
-              </tr>
--->
               <tr><td height="1" colspan="2" bgcolor="e1e1e1"></td></tr>
               <tr>
                 <td align="center"><img src="<?=$memo_skin_path?>/img/memo_icon04.gif" width="3" height="3" /></td>
@@ -185,6 +170,6 @@ $board['resize_img_width'] = $max_img_width;
 
     </td>
     
-    <td width=15></td> <!-- 쪽지목록과 내용사이의 여백설정하기 -->
+    <td width=10></td> <!-- 쪽지목록과 내용사이의 여백설정하기 -->
 
-    <td> <!-- 우측 내용부분 -->
+    <td width=<?=$content_width?>> <!-- 우측 내용부분 -->

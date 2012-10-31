@@ -23,6 +23,8 @@
         </ul>
     
     </td>
+
+    <td width=10></td> <!-- 우측의 여백 설정하기 -->
 </tr>
 </table>
 
@@ -88,6 +90,6 @@ function all_delete_trash() {
     f.submit();
 }
 
-// 윈도우 크기를 조정해 줍니다.
-window.resizeTo( <?=$config['memo_width']?> , <?=$config['memo_height']?> );
+// 윈도우 크기를 조정해 줍니다 - 테스트할때만 오픈
+//window.resizeTo( <?=$config['memo_width']?> , <?=$config['memo_height']?> );
 </script>
