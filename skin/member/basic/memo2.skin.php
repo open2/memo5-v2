@@ -102,5 +102,5 @@ function all_delete_trash() {
 }
 
 // 윈도우 크기를 조정해 줍니다.
-window.resizeTo( 730 , 600);
+window.resizeTo( <?=$config['memo_width']?> , <?=$config['memo_height']?> );
 </script>

@@ -98,4 +98,8 @@ if (isset($kind)) {
 
 // 메모를 지정된 시간이 지나야 보낼 수 있게 설정 (스팸쪽지를 막기 위해서...)
 $g4['memo_delay_sec'] = 60;
+
+// 메모창 크기를 조정해 줍니다.
+$config['memo_width'] = 730;
+$config['memo_height'] = 600;
 ?>
