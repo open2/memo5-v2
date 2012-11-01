@@ -17,7 +17,7 @@ $board['resize_img_width'] = $max_img_width;
 ?>
 
 <!-- http://html.nhndesign.com/uio_factory -->
-<link rel="stylesheet" href="<?=$memo_skin_path?>/memo2.css?v19" type="text/css">
+<link rel="stylesheet" href="<?=$memo_skin_path?>/memo2.css?v21" type="text/css">
 
 <!-- sideview를 위해서 -->
 <script type='text/javascript' src='<?=$g4[path]?>/js/sideview.js'></script>

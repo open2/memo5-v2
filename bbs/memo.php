@@ -689,7 +689,7 @@ break;
             if (strlen($row[me_subject]) ==0) // 투명글의 경우에 제목없음으로 표시
                 $list[$i][subject] = "제목이 없습니다";
             else
-                $list[$i][subject] = $row[me_subject];
+                $list[$i][subject] = strip_tag($row[me_subject]);
             
             // 휴지통의 경우에는 게시글의 출처를 표시
             if ($kind == "trash")

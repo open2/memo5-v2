@@ -26,7 +26,7 @@
             <option value="me_send_mb_id">보낸(아이디)</option>
         <? } ?>
         </select>
-        <input name="stx" type="text" class="ed" value='<?=$stx?>' maxlength=15 size="15" itemname="검색어" required />
+        <input name="stx" type="text" class="ed" style=" height:17px;" value='<?=$stx?>' maxlength=15 size="15" itemname="검색어" required />
         <input type=image src="<?=$memo_skin_path?>/img/search.gif" border=0 align=absmiddle>
     </td>
     </tr>
@@ -53,7 +53,7 @@
         <th><?=$list_title ?></th>
         <th>제 목</th>
         <th>보낸시간</th>
-        <th><? if ($kind == 'notice') {  if ($is_admin=='super' || $member[mb_id]==$view[me_send_mb_id]) { ?>수신레벨<? } } else { ?>받은시간<?}?></b></th>
+        <th><? if ($kind == 'notice') {  if ($is_admin=='super' || $member['mb_id']==$view['me_send_mb_id']) { ?>수신레벨<? } } else { ?>받은시간<?}?></b></th>
     </tr>
     </thead>
 
@@ -65,20 +65,30 @@
             <input name="chk_me_id[]" type="checkbox" value="<?=$list[$i][me_id]?>" />
             <? } ?>
         </td>
-        <? if ($list[$i][read_datetime] == '읽지 않음' or $list[$i][read_datetime] == '수신 않음') { ?>
-            <td align="center"><img src="<?=$memo_skin_path?>/img/check.gif" width="13" height="12" /></td>
-            <td align="center"><?=$list[$i][name]?></td>
-            <td align="left">&nbsp;<? if ($list[$i][me_file]) { ?><img src="<?=$memo_skin_path?>/img/icon_file.gif" align=absmiddle>&nbsp;<? } ?><a href='<?=$list[$i][view_href]?>&page=<?=$page?>&sfl=<?=$sfl?>&stx=<?=$stx?>&unread=<?=$unread?>'><?=cut_str($list[$i][subject],27)?></a></td>
-            <td align="center"><?=$list[$i][send_datetime]?></td>
-            <? if ($kind == 'notice') { if ($is_admin=='super' || $member[mb_id]==$view[me_send_mb_id]) $list[$i][read_datetime] = $list[$i][me_recv_mb_id]; else $list[$i][read_datetime] = ""; } ?>
-           <td align="center"><?=$list[$i][read_datetime]?></td>
-       <? } else { ?>
-            <td align="center"><img src="<?=$memo_skin_path?>/img/nocheck.gif" width="12" height="10" /></td>
-            <td align="center"><?=$list[$i][name]?></td>
-            <td align="left">&nbsp;<? if ($list[$i][me_file]) { ?><img src="<?=$memo_skin_path?>/img/icon_file.gif" align=absmiddle>&nbsp;<? } ?><a href='<?=$list[$i][view_href]?>&page=<?=$page?>&sfl=<?=$sfl?>&stx=<?=$stx?>&unread=<?=$unread?>'><?=cut_str(strip_tags($list[$i][subject]),27)?></a></td>
-            <td align="center"><?=$list[$i][send_datetime]?></td>
-            <td align="center"><?=$list[$i][read_datetime]?></td>
+        <?
+          if ($list[$i]['read_datetime'] == '읽지 않음' or $list[$i]['read_datetime'] == '수신 않음') {
+              $style = "style='font-weight:bold;'";
+        ?>
+        <td><img src="<?=$memo_skin_path?>/img/check.gif" width="13" height="12" /></td>
+        <?
+        } else {
+            $style = "";
+        ?>
+        <td><img src="<?=$memo_skin_path?>/img/nocheck.gif" width="12" height="10" /></td>
         <? } ?>
+        <td><?=$list[$i]['name']?></td>
+        <td align="left" <?=$style?> >&nbsp;<? if ($list[$i]['me_file']) { ?><img src="<?=$memo_skin_path?>/img/icon_file.gif" align=absmiddle>&nbsp;<? } ?><a href='<?=$list[$i]['view_href']?>&page=<?=$page?>&sfl=<?=$sfl?>&stx=<?=$stx?>&unread=<?=$unread?>' title='<?=$list[$i]['subject']?>'><?=cut_str($list[$i]['subject'],27)?></a></td>
+        <td <?=$style?> ><?=$list[$i]['send_datetime']?></td>
+        <?
+        // 공지쪽지의 읽은 날짜는???
+        if ($kind == 'notice') { 
+            if ($is_admin=='super' || $member[mb_id]==$view[me_send_mb_id])
+                $list[$i]['read_datetime'] = $list[$i]['me_recv_mb_id'];
+            else 
+                $list[$i]['read_datetime'] = "";
+        }
+        ?>
+        <td <?=$style?> ><?=$list[$i]['read_datetime']?></td>
     </tr>
     <? } ?>
     <? if ($i==0) { ?>
@@ -91,14 +101,14 @@
         <td colspan=6 align=left>
           &nbsp;&nbsp;
           <? if ($i > 0 and $kind !='notice') { ?>
-          <a href="javascript:select_delete();"><img src="<?=$memo_skin_path?>/img/bt02.gif" align=absmiddle/></a>
+          <a href="javascript:select_delete();"><img src="<?=$memo_skin_path?>/img/bt02.gif" /></a>
           <? } ?>
           <? if ($i > 0 and $kind == "trash") { ?>
           <a href="javascript:all_delete_trash();"><img src="<?=$memo_skin_path?>/img/all_del.gif" align=absmiddle/></a>
           <? } ?>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <? 
-        $page = get_paging($config[cf_write_pages], $page, $total_page, "?&kind=$kind&sfl=$sfl&stx=$stx&unread=$unread&page="); 
+        $page = get_paging($config['cf_write_pages'], $page, $total_page, "?&kind=$kind&sfl=$sfl&stx=$stx&unread=$unread&page="); 
         echo "$page";
         ?>
         </td>
