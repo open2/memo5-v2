@@ -1,16 +1,15 @@
 <form name=fsearch method=get style="margin:0px;">
 <input type='hidden' name='kind' value='<?=$kind?>'>
-
-<table width="100%" height="30" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td width="14">&nbsp;</td>
+<table width="100%" height="30" border="0" cellspacing="0">
+    <tr>
     <td>
-        <span class="style5"><?=$memo_title?> ( <span class="style6"><? if ($kind == "recv") echo "<a href='$memo_url?kind=recv&unread=only'>$total_count_recv_unread</a> / "?><a href='<?=$memo_url?>?kind=$kind'><?=number_format($total_count)?></a></span> )</span>&nbsp<a href="<?=$memo_url?>?kind=<?=$kind?>&sfl=me_file&stx=me_file"><img src="<?=$memo_skin_path?>/img/icon_file.gif" align=absmiddle></a>
+        <b><?=$memo_title?> 
+        ( <? if ($kind == "recv") echo "<a href='$memo_url?kind=recv&unread=only' title='안읽은쪽지'><font color=red>$total_count_recv_unread</font></a> / "?><a href='<?=$memo_url?>?kind=$kind'><?=number_format($total_count)?></a></span> )</b>
+        &nbsp<a href="<?=$memo_url?>?kind=<?=$kind?>&sfl=me_file&stx=me_file"><img src="<?=$memo_skin_path?>/img/icon_file.gif" align=absmiddle></a>
     </td>
-
     <!-- 검색하기 -->
-    <td width="115" align="right"><span style="margin:0px;">
-      <select name='sfl' id='sfl' class='small'>
+    <td align="right">
+        <select name='sfl' id='sfl'>
             <option value="me_subject_memo">제목+내용</option>
             <option value="me_subject">제목</option>
             <option value="me_memo">내용</option>
@@ -26,20 +25,16 @@
             <option value="me_send_mb_nick">보낸<? if ($config['cf_memo_mb_name']) echo "(이름)"; else echo "(별명)"; ?></option>
             <option value="me_send_mb_id">보낸(아이디)</option>
         <? } ?>
-      </select>
-    </span>&nbsp;</td>
-    <td width="105"><span style="margin:0px;">
+        </select>
         <input name="stx" type="text" class="ed" value='<?=$stx?>' maxlength=15 size="15" itemname="검색어" required />
-    </span></td>
-    <td width="50">
         <input type=image src="<?=$memo_skin_path?>/img/search.gif" border=0 align=absmiddle>
     </td>
-  </tr>
+    </tr>
 </table>
 </form>
 
 <form name="fboardlist" method="post" style="margin:0px;">
-<table class="tbl_type" border="1" cellspacing="0">
+<table class="tbl_type" width="100%" border="1" cellspacing="0">
     <colgroup> 
       <col width="35">
       <col width="20">
@@ -123,7 +118,7 @@
         $msg .= "<li>읽지 않은 쪽지를 삭제하면, 발신이 취소(수신자 쪽지함에서 삭제) 됩니다.";
     }
     if ($kind == "send" || $kind == "recv") { // 보낸쪽지함 일때만 메시지를 출력 합니다.
-        $msg .= "<li>보관하지 않은 쪽지는 " . $config[cf_memo_del] . "일 후 삭제되므로 중요한 쪽지는 보관하시기 바랍니다.";
+        $msg .= "<li>보관안된 쪽지는 " . $config['cf_memo_del'] . "일 후 삭제되므로 중요한 쪽지는 보관하시기 바랍니다.";
     }
     if ($msg !== "")
         echo "<tr><td colspan=6 align=left><ul>$msg</ul><td></tr>";
@@ -131,8 +126,6 @@
     </tfoot>
 </table>
 </form>
-
-
 
 <script type="text/javascript">
 if ('<?=$stx?>') {

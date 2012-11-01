@@ -8,7 +8,7 @@ $config['memo_height'] = 600;
 // 쪽지 테이블의 기본을 정의
 $table_width           = $config['memo_width'];   // 10(죄측여백)+$left_menu_width(좌측메뉴)+ 10(쪽지목록과 메뉴사이 여백) + 내용 + 10(우측여백)
 $left_menu_width       = 194;                                   // 왼쪽 메뉴의 폭
-$content_width         = $table_width - $left_menu_width - 30;  // 쪽지 내용창의 폭
+$content_width         = $table_width - $left_menu_width - 30 - 10;  // 쪽지 내용창의 폭, -10은 테두리 때문에 생기는 넓이... 정확한 숫자는 체크가 필요한 사항
 $content_inner_width   = $content_width - 1;                    // 쪽지 내용창 안쪽의 최대 폭
 $max_img_width         = $content_width - 50;                   // 이미지의 폭
 
