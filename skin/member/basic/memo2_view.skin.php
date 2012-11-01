@@ -37,13 +37,14 @@ win.print();
 
 <table width="100%" height="30" border="0" cellpadding="0" cellspacing="0">
 <tr>
-  <td width="20"><img src="<?=$memo_skin_path?>/img/memo_icon01.gif" width="13" height="12" /></td>
-  <td><b><?=$memo_title?> - 쪽지보기</b></td>
+  <td align=left>&nbsp;<img src="<?=$memo_skin_path?>/img/memo_icon01.gif" width="13" height="12" align=absmiddle />
+  &nbsp;<b><?=$memo_title?> - 쪽지보기</b></td>
   <td align=right>
   <? if ($config[cf_memo_print]) { ?><a href="#" onclick="javascript:print_contents('memo_contents')">프린트</a>&nbsp;&nbsp;&nbsp;<? } ?>
   <? if ($view[after_href]) { ?><a href='<?=$view[after_href]?>'>다음</a>&nbsp;&nbsp;&nbsp;<? } ?>
   <? if ($view[before_href]) { ?><a href='<?=$view[before_href]?>'>이전</a>&nbsp;&nbsp;&nbsp;<? } ?>
   <a href='<?=$memo_url?>?kind=<?=$kind?>&sfl=<?=$sfl?>&stx=<?=$stx?>&unread=<?=$unread?>&page=<?=$page?>'>목록</a>
+  &nbsp;
   </td>
 </tr>
 </table>
