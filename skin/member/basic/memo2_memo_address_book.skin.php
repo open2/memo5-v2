@@ -1,8 +1,5 @@
 <?
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
-
-if (!$is_member)
-    alert("회원만 접속할 수 있는 페이지 입니다");
 ?>
 
 <table height="30" border="0" cellpadding="0" cellspacing="0">
@@ -14,7 +11,7 @@ if (!$is_member)
 </tr>
 </table>
 
-<table class="tbl_type" width="100%" border="1" cellspacing="0">
+<table class="tbl_type" border="1" cellspacing="0">
 <colgroup> 
     <col width="35">
     <col width="">
@@ -24,19 +21,21 @@ if (!$is_member)
     <col width="70">
 </colgroup> 
 <thead>
+<tr>
     <th>no</th>
     <th>회원</th>
     <th>수신함</th>
     <th>발신함</th>
     <th>보관(수신)</th>
     <th>보관(발신)</th>
+</tr>
 </thead>
 <?
 $i=0;
 foreach ($list as $val) { 
-    echo "<tr>";
     $i++;
     ?>
+    <tr>
     <td><?=$i?></td>
     <td><?=$val[name]?></td>
     <td>
@@ -51,8 +50,6 @@ foreach ($list as $val) {
     <td>
         <? if ($val['save_send']) { ?><a href="<?=$memo_url?>?kind=save&sfl=me_recv_mb_id&stx=<?=$val[mb_id]?>"><?echo $val['save_send'];?></a><? } else echo '-'; ?>
     </td>
-    <?
-    echo "</tr>";
-}
-?>
+    </tr>
+<? } ?>
 </table>
