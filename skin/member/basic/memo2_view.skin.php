@@ -72,7 +72,7 @@ win.print();
         <? if ($is_admin=='super' || $member['mb_id']==$view['me_send_mb_id']) { ?>
         <tr>
             <td>수신레벨</td>
-            <td align=left colspan=2><?=$view['me_recv_mb_id']?></td>
+            <td align=left colspan=2>&nbsp;<?=$view['me_recv_mb_id']?></td>
         </tr>
         <tr>
             <td>안읽은사람</td>

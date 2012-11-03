@@ -53,7 +53,15 @@
         <th><?=$list_title ?></th>
         <th>제 목</th>
         <th>보낸시간</th>
-        <th><? if ($kind == 'notice') {  if ($is_admin=='super' || $member['mb_id']==$view['me_send_mb_id']) { ?>수신레벨<? } } else { ?>받은시간<?}?></b></th>
+        <th>
+        <? if ($kind == 'notice') {
+            if ($is_admin=='super' || $member['mb_id']==$view['me_send_mb_id']) { ?>  
+                수신레벨
+            <? } ?>
+        <? } else { ?>
+            받은시간
+        <? } ?>
+        </th>
     </tr>
     </thead>
 
