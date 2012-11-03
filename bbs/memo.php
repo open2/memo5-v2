@@ -176,6 +176,10 @@ switch ($kind) {
 
             $list[$row['mb_id']]['name'] = $name;
         }
+
+        // 주소록 전체 갯수
+        $tot_cnt = count($list);
+
         break;
         
     case 'write'  : // 쪽지보내기
@@ -689,7 +693,7 @@ break;
             if (strlen($row[me_subject]) ==0) // 투명글의 경우에 제목없음으로 표시
                 $list[$i][subject] = "제목이 없습니다";
             else
-                $list[$i][subject] = strip_tag($row[me_subject]);
+                $list[$i][subject] = strip_tags($row[me_subject]);
             
             // 휴지통의 경우에는 게시글의 출처를 표시
             if ($kind == "trash")
