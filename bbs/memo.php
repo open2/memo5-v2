@@ -116,11 +116,39 @@ if ($kind == "write") {
 // kind에 따라서 action~!!!
 switch ($kind) {
 
+    case 'memo_config'      : // 설정 관리
+
+        // 쪽지 삭제일이 1보다 작으면 재조정
+        if ($config[cf_memo_del] < 1)
+           $config[cf_memo_del] = 180;
+
+        // 안읽은 쪽지 삭제일이 1보다 작거나 쪽지삭제일보다 작으면 재조정
+        if ($config[cf_memo_del_unread] < 1 or $config[cf_memo_del_unread] < $config[cf_memo_del])
+            $config[cf_memo_del_unread] = $config[cf_memo_del];
+
+        if (!$config[cf_memo_page_rows])    $config[cf_memo_page_rows] = 12;
+        if (!$config[cf_memo_del_unread])   $config[cf_memo_del_unread] = $config[cf_memo_del];
+        if (!$config[cf_memo_del_trash])    $config[cf_memo_del_trash] = $config[cf_memo_del];
+        if (!$config[cf_memo_no_reply])     $config[cf_memo_no_reply] = 0;
+
+        // 최대 업로드 파일 사이즈 (m로 지정되었을 때)
+        if (!$config[cf_memo_file_size]) {
+            $max_upload_size = intval(substr(ini_get("upload_max_filesize"), 0, -1));
+            if ($max_upload_size > 4)
+                $config[cf_memo_file_size] = "4";
+            else
+                $config[cf_memo_file_size] = intval(substr(ini_get("upload_max_filesize"), 0, -1));
+        }
+
+        if (!$config[cf_max_memo_file_size]) {
+            $config[cf_max_memo_file_size] = 0;
+        }
+        break;
+
     case 'friend'           : // 친구관리
     case 'online'           : // 현재접속자
     case 'memo_group'       : // 메모그룹
     case 'memo_group_admin' : // 메모그룹 관리
-    case 'memo_config'      : // 설정 관리
         break;
         
     case 'memo_address_book' : // 주소록 관리
