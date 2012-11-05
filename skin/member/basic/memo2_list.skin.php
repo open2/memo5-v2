@@ -34,6 +34,8 @@
 </form>
 
 <form name="fboardlist" method="post" style="margin:0px;">
+<input type=hidden name=kind value="<?=$kind?>">
+
 <table class="tbl_type" width="100%" border="1" cellspacing="0">
     <colgroup> 
       <col width="35">
