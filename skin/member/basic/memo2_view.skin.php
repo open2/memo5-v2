@@ -179,6 +179,14 @@ win.print();
 </table>
 </form>
 
+<?
+// ±¸±Û ±¤°í¸¦ include
+$ad_file = $memo_skin_path . "/memo2_adsense.php";
+if (file_exists($ad_file)) {
+    include_once($ad_file);
+}
+?>
+
 <script type="text/javascript">
 function file_download() {
     var link = "<?=$g4[bbs_path]?>/download_memo_file.php?kind=<?=$kind?>&me_id=<?=$me_id?>";

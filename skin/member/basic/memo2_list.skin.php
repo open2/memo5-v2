@@ -108,7 +108,7 @@
     <? } ?>
     <tfoot>
     <tr>
-        <td colspan=6 align=left>
+        <td colspan=6 align=left style="padding:2px 0 2px;">
           &nbsp;&nbsp;
           <? if ($i > 0 and $kind !='notice') { ?>
           <a href="javascript:select_delete();"><img src="<?=$memo_skin_path?>/img/bt02.gif" /></a>
@@ -146,6 +146,14 @@
     </tfoot>
 </table>
 </form>
+
+<?
+// ±¸±Û ±¤°í¸¦ include
+$ad_file = "$memo_skin_path/memo2_adsense.php";
+if (file_exists($ad_file)) {
+    include_once($ad_file);
+}
+?>
 
 <script type="text/javascript">
 if ('<?=$stx?>') {
