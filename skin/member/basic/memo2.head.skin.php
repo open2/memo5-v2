@@ -16,7 +16,6 @@ $max_img_width         = $content_width - 50;                   // 이미지의 폭
 $board['resize_img_width'] = $max_img_width;
 ?>
 
-<!-- http://html.nhndesign.com/uio_factory -->
 <link rel="stylesheet" href="<?=$memo_skin_path?>/memo2.css?v22" type="text/css">
 
 <!-- sideview를 위해서 -->
