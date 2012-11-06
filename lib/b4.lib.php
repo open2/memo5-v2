@@ -685,6 +685,16 @@ function get_board($bo_table, $fields='*')
     return sql_fetch(" select $fields from $g4[board_table] where bo_table = '$bo_table' ");
 }
 
+// 게시의 게시글 하나를 읽음
+function get_write2($bo_table, $wr_id, $fields='*')
+{
+    global $g4;
+
+    $tmp_write_table = $g4[write_prefix] . $bo_table;
+
+    return sql_fetch(" select $fields from $tmp_write_table where wr_id = '$wr_id' ");
+}
+
 
 // email 주소 일부 암호화 (가영아빠님)
 function encode_mail_form($email, $encode_count=2, $fields='*')
@@ -979,7 +989,7 @@ function remove_special_chars($subject) {
     }
 
     // 문자열을 치환 합니다.
-    $subject = preg_replace("/[$change]/u", "", $subject);
+    $subject = preg_replace("/[$change]/u", "_", $subject);
 
     // euc-kr 일 경우 utf-8을 다시 euc-kr 변환한다.
     if (strtolower($g4[charset]) == 'euc-kr') {
@@ -1507,9 +1517,15 @@ function member_level_up($mb_id)
             else
                 $up_check = -1000;
 
+            //검증일수가 있으면 해당 일수 만큼만 최신글을 확인
+            if ($result['up_audit_days'])
+                $sql_audit = " and bn_datetime > '".date("Y-m-d H:i:s", $g4[server_time] - (86400 * $result[up_audit_days]))."' ";
+            else
+                $sql_audit = "";
+
             // 게시글 수 (게시글 확인은 전체 최근글 구간에 대해서 실시)
             if ($result['up_post']) {
-                $sql = " select count(*) as cnt from $g4[board_new_table] where mb_id = '$mb[mb_id]' and wr_id = wr_parent ";
+                $sql = " select count(*) as cnt from $g4[board_new_table] where mb_id = '$mb[mb_id]' and wr_id = wr_parent $sql_audit ";
                 $chk = sql_fetch($sql);
                 if ($chk['cnt'] >= $result['up_post'])
                     $up_check = $up_check + 1;
@@ -1519,7 +1535,7 @@ function member_level_up($mb_id)
 
             // 전체 게시글 수 (코멘트 포함)
             if ($result['up_post_all']) {
-                $sql = " select count(*) as cnt from $g4[board_new_table] where mb_id = '$mb[mb_id]' ";
+                $sql = " select count(*) as cnt from $g4[board_new_table] where mb_id = '$mb[mb_id]' $sql_audit ";
                 $chk = sql_fetch($sql);
                 if ($chk['cnt'] >= $result['up_post_all'])
                     $up_check = $up_check + 1;
@@ -1581,7 +1597,7 @@ function member_level_up($mb_id)
         if ($result['down_post'] > 0) {
             $sql = " select count(*) as cnt from $g4[board_new_table] where mb_id = '$mb[mb_id]' and wr_id = wr_parent ";
             $chk = sql_fetch($sql);
-            if ($chk['cnt'] > $result['down_post'])
+            if ($chk['cnt'] < $result['down_post'])
                 $down_check = $down_check + 1;
             else
                 $down_check = -1000;
@@ -1590,7 +1606,7 @@ function member_level_up($mb_id)
         if ($result['down_post_all'] > 0) {
             $sql = " select count(*) as cnt from $g4[board_new_table] where mb_id = '$mb[mb_id]' ";
             $chk = sql_fetch($sql);
-            if ($chk['cnt'] > $result['down_post_all'])
+            if ($chk['cnt'] < $result['down_post_all'])
                 $down_check = $down_check + 1;
             else
                 $down_check = -1000;
@@ -1640,5 +1656,146 @@ function member_level_up($mb_id)
     }
 
     return $rstr;
+}
+
+// sideview를 출력
+function print_sideview($mb_id, $board) {
+    global $config, $g4;
+
+    $subject_mb = get_member($mb_id, "mb_id, mb_nick, mb_name, mb_email, mb_email_certify, mb_homepage, mb_homepage_certify");
+
+    // 게시판에 출력할 글쓴이의 이름/닉네임이 바뀌었을 때 어떻게 될까요? 몰래 닉네임 바꾸고 장난치면 어찌 될까요?
+    if ($board[bo_use_name])
+        $tmp_name = $subject_mb[mb_name];
+    else
+        $tmp_name = $subject_mb[mb_nick];
+
+    $tmp_name = get_text(cut_str($tmp_name, $config['cf_cut_name'])); // 설정된 자리수 만큼만 이름 출력
+    $subject_sideview = get_sideview($subject_mb['mb_id'], $tmp_name, $subject_mb['wr_email'], $subject_mb['wr_homepage']);
+
+    return $subject_sideview;
+}
+
+// 게시판에 게시글을 신규로 insert 합니다.
+function board_write($bo_table, $mb_id)
+{
+    global $g4;
+    global $ca_name, $html, $secret, $mail, $wr_subject, $wr_content, $wr_link1, $wr_link2, $wr_related, $wr_good, $wr_nogood;
+    global $bf_file, $bf_source, $bf_type, $bf_width, $bf_height;
+    global $wr_1, $wr_2, $wr_3, $wr_4, $wr_5, $wr_6, $wr_7, $wr_8, $wr_9, $wr_10;
+
+    // 게시판 정보
+    $board = get_board($bo_table);
+
+    // 회원 정보
+    $member = get_member($mb_id);
+
+    // 게시판 정보를 얻습니다 - 신규 insert 기준
+    $g4_id = $board[gr_id];
+    $write_table = $g4['write_prefix'] . $bo_table; // 게시판 테이블 전체이름
+    $wr_num = get_next_num($write_table);
+    $wr_reply = "";
+    $wr_name = $board[bo_use_name] ? $member[mb_name] : $member[mb_nick];
+    $wr_password = $member[mb_password];
+    $wr_email = $member[mb_email];
+    $wr_homepage = $member[mb_homepage];
+        
+    $sql = " insert into $write_table
+                set wr_num = '$wr_num',
+                    wr_reply = '$wr_reply',
+                    wr_comment = 0,
+                    ca_name = '$ca_name',
+                    wr_option = '$html,$secret,$mail',
+                    wr_subject = '$wr_subject',
+                    wr_content = '$wr_content',
+                    wr_link1 = '$wr_link1',
+                    wr_link2 = '$wr_link2',
+                    wr_link1_hit = 0,
+                    wr_link2_hit = 0,
+                    wr_hit = 0,
+                    wr_good = '$wr_good',
+                    wr_nogood = '$wr_nogood',
+                    mb_id = '$member[mb_id]',
+                    wr_password = '$wr_password',
+                    wr_name = '$wr_name',
+                    wr_email = '$wr_email',
+                    wr_homepage = '$wr_homepage',
+                    wr_datetime = '$g4[time_ymdhis]',
+                    wr_last = '$g4[time_ymdhis]',
+                    wr_ip = '$_SERVER[REMOTE_ADDR]',
+                    wr_related = '$wr_related',
+                    wr_1 = '$wr_1',
+                    wr_2 = '$wr_2',
+                    wr_3 = '$wr_3',
+                    wr_4 = '$wr_4',
+                    wr_5 = '$wr_5',
+                    wr_6 = '$wr_6',
+                    wr_7 = '$wr_7',
+                    wr_8 = '$wr_8',
+                    wr_9 = '$wr_9',
+                    wr_10 = '$wr_10' ";
+
+    sql_query($sql);
+    $wr_id = mysql_insert_id();
+
+    // 부모 아이디에 UPDATE
+    sql_query(" update $write_table set wr_parent = '$wr_id' where wr_id = '$wr_id' ");
+
+    // 새글 INSERT
+    sql_query(" insert into $g4[board_new_table] ( bo_table, wr_id, wr_parent, bn_datetime, mb_id, wr_is_comment, gr_id, wr_option, parent_mb_id) 
+                values ( '$bo_table', '$wr_id', '$wr_id', '$g4[time_ymdhis]', '$member[mb_id]', '0', '$gr_id', '$secret', '$parent_mb_id[mb_id]') "); 
+    
+    // 게시글 1 증가
+    sql_query("update $g4[board_table] set bo_count_write = bo_count_write + 1, bo_modify_datetime = '$g4[time_ymdhis]' where bo_table = '$bo_table'");
+
+    // 불당팩 - min_wr_num 업데이트
+    $result = sql_fetch(" select MIN(wr_num) as min_wr_num from $write_table ");
+    $sql = " update $g4[board_table] set min_wr_num = '$result[min_wr_num]' where bo_table = '$bo_table' ";
+    sql_query($sql);
+
+    // 첨부파일 insert
+    if ($bf_file) {
+        $sql = " insert into $g4[board_file_table]
+                    set bo_table = '$bo_table',
+                        wr_id = '$wr_id',
+                        bf_no = '0',
+                        bf_source = '$bf_source',
+                        bf_file = '$bf_file',
+                        bf_content = '$wr_subject',
+                        bf_download = 0,
+                        bf_filesize = '',
+                        bf_width = '$bf_width',
+                        bf_height = '$bf_height',
+                        bf_type = '$bf_type',
+                        bf_datetime = '$g4[time_ymdhis]' ";
+        sql_query($sql);
+    }
+
+    // 불당팩 - 첨부파일의 갯수 파악
+    $sql = " select count(*) as cnt from $g4[board_file_table] where bo_table = '$bo_table' and wr_id = '$wr_id' and bf_source <> '' ";
+    $result = sql_fetch($sql);
+
+    // 불당팩 - 첨부파일 갯수 업데이트
+    $sql = " update $write_table set wr_file_count = '$result[cnt]' where wr_id = '$wr_id' ";
+    sql_query($sql);
+
+    // 불당팩 - CCL 정보 업데이트
+    if ($board[bo_ccl]) {
+        $wr_ccl = "";
+        if ($wr_ccl_by == "by") { $wr_ccl .= "by"; }
+        if ($wr_ccl_nc == "nc") { $wr_ccl .= $wr_ccl ? "-": ""; $wr_ccl .= "nc"; }
+        if ($wr_ccl_nd == "nd") { $wr_ccl .= $wr_ccl ? "-": ""; $wr_ccl .= "nd"; }
+        if ($wr_ccl_nd == "sa") { $wr_ccl .= $wr_ccl ? "-": ""; $wr_ccl .= "sa"; }
+
+        sql_query("update $write_table set wr_ccl = '$wr_ccl' where wr_id = '$wr_id'");
+    }
+}
+
+// 줄바꿈 없애기, http://huddak.net/bbs/board.php?bo_table=cm_free&wr_id=3629
+function remove_nr($str) {
+    $reg_e = array('/\n/', '/\r/', '/\"/', "/<\/script>/i"); 
+    $reg_p = array(' ', ' ', '\\"', "<\/SCRIPT>"); 
+
+    return preg_replace($reg_e, $reg_p, $str);
 }
 ?>
