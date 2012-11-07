@@ -115,7 +115,7 @@ $board['resize_img_width'] = $max_img_width;
           <tr>
             <td width="7" background="<?=$memo_skin_path?>/img/memo_line3_left.gif">&nbsp;</td>
             <td><table width="100%" border="0" cellpadding="0" cellspacing="0">
-                <? if ($config[cf_friend_management]) { ?>
+                <? if ($config['cf_friend_management']) { ?>
                 <tr>
                   <td width="25" align="center"><img src="<?=$memo_skin_path?>/img/memo_icon05.gif" width="19" height="19" /></td>
                   <td width="125" height="25"><strong><a href='<?=$memo_url?>?kind=online'>模备包府</a></strong></td>
@@ -146,7 +146,7 @@ $board['resize_img_width'] = $max_img_width;
                   </td>
                 </tr>
                 <tr><td height="1" colspan="2" bgcolor="e1e1e1"></td></tr>
-                <? if ($config[cf_memo_user_config] || $is_admin == "super") { ?>
+                <? if ($config['cf_memo_user_config'] || $is_admin == "super") { ?>
                 <tr>
                   <td align="center"><img src="<?=$memo_skin_path?>/img/btn_c_ok.gif" width="12" height="11" /></td>
                   <td height="25"><strong>
