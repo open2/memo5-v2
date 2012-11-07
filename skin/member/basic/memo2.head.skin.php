@@ -22,7 +22,7 @@ $board['resize_img_width'] = $max_img_width;
 <script type='text/javascript' src='<?=$g4[path]?>/js/sideview.js'></script>
 
 <!-- 상단부 여백 설정하기 -->
-<table border="0" cellspacing="0" cellpadding="0"><tr><td height="10"></td></tr></table>
+<table width=<?=$table_width?> border="0" cellspacing="0" cellpadding="0"><tr><td height="10"></td></tr></table>
 
 <!-- 메뉴영역 -->
 <table width=<?=$table_width?> border="0" cellspacing="0" cellpadding="0"> 
@@ -30,7 +30,7 @@ $board['resize_img_width'] = $max_img_width;
     <td width=10></td> <!-- 좌측의 여백 설정하기 -->
 
     <td width=<?=$left_menu_width?>> <!-- 좌측 메뉴 -->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <table width=<?=$left_menu_width?> border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="7" height="7" background="<?=$memo_skin_path?>/img/memo_box_tl.gif"></td>
             <td height="7" background="<?=$memo_skin_path?>/img/memo_line_top.gif"></td>
@@ -95,17 +95,17 @@ $board['resize_img_width'] = $max_img_width;
 
         <? if ($config['cf_memo_notice_memo']) { ?>
         <br>
-        <table width="100%" border="0" cellpadding="10" cellspacing="0" style='border-width:1; border-color:#DDDDDD; border-style:solid;'>
+        <table width=<?=$left_menu_width?> border="0" cellpadding="10" cellspacing="0" style='border-width:1; border-color:#DDDDDD; border-style:solid;'>
         <tr><td width=100%>
         <?=nl2br($config['cf_memo_notice_memo'])?>
         </td></tr></table>
         <? } ?>
 
         <!-- 좌측 메뉴 사이의 여백 -->
-        <table width="100%"><tr><td height="5" colspan="3"></td></tr></table>
+        <table width=<?=$left_menu_width?>><tr><td height="5" colspan="3"></td></tr></table>
         
         <!-- 좌측 두번째 메뉴 -->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <table width=<?=$left_menu_width?> border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="7" height="7" background="<?=$memo_skin_path?>/img/memo_box3_tl.gif"></td>
             <td height="7" background="<?=$memo_skin_path?>/img/memo_line3_top.gif"></td>
