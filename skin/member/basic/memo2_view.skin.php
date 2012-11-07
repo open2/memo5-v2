@@ -121,9 +121,9 @@ win.print();
         <td style="text-align:left; padding-left:15px; padding-top:30px; padding-bottom:30px; word-break:break-all;" colspan=3>
         <?
         if ($config['cf_memo_b4_resize'])
-            echo resize_content($view[memo], $max_img_width);
+            echo resize_content($view['memo'], $max_img_width);
         else
-            echo $view[memo];
+            echo $view['memo'];
 
         // 서명이 있으면 서명을 출력
         if ($mb_send['mb_signature'])
