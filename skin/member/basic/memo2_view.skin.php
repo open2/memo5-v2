@@ -56,7 +56,7 @@ win.print();
     <colgroup> 
       <col width="80">
       <col width="">
-      <col width="120">
+      <col width="180">
     </colgroup> 
     <thead>
     <tr>
