@@ -118,7 +118,7 @@ win.print();
     <? } ?>
 
     <tr>
-        <td style="text-align:left; padding-left:15px; padding-top:10px; padding-bottom:10px; word-break:break-all;" colspan=3>
+        <td style="text-align:left; padding-left:15px; padding-top:30px; padding-bottom:30px; word-break:break-all;" colspan=3>
         <?
         if ($config['cf_memo_b4_resize'])
             echo resize_content($view[memo], $max_img_width);
