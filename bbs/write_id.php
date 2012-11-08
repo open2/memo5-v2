@@ -1,5 +1,6 @@
 <?
 include_once("./_common.php");
+include_once("$g4[path]/memo.config.php");
 
 if (!$is_member) 
     alert_close("회원만 접속가능한 화면 입니다");
@@ -7,6 +8,12 @@ if (!$is_member)
 $sname = preg_replace('/\%/', '', strip_tags($sname));
 
 if ($sname) {
+
+    // 회원검색은 중요한 사안이므로 stamp를 남겨둡니다.
+    $tmp_point = ($member[mb_point] > 0) ? $member[mb_point] : 0;
+    if ($tmp_point + $config[cf_memo_send_point] < 0 && !$is_admin)
+        alert("보유하신 포인트(".number_format($member[mb_point]).")가 없거나 모자라서 회원검색(".number_format($config[cf_memo_send_point]).")가 불가합니다.\\n\\n포인트를 적립하신 후 다시 해 주십시오.");
+    insert_point($member[mb_id], $config[cf_memo_send_point], "쪽지5 친구찾기 - $sname", '친구찾기', $g4[time_ymdhis], '쪽지5');
   
     switch ($sfl) {
       case "mb_nick" : $search_sql = " mb_nick like '%$sname%' "; 
@@ -21,15 +28,13 @@ if ($sname) {
                        $order_sql = " order by mb_id"; break;
     }
 
-    // 회원검색은 중요한 사안이므로 stamp를 남겨둡니다.
-    $tmp_point = ($member[mb_point] > 0) ? $member[mb_point] : 0;
-    if ($tmp_point + $config[cf_memo_send_point] < 0 && !$is_admin)
-        alert("보유하신 포인트(".number_format($member[mb_point]).")가 없거나 모자라서 회원검색(".number_format($config[cf_memo_send_point]).")가 불가합니다.\\n\\n포인트를 적립하신 후 다시 해 주십시오.");
-    insert_point($member[mb_id], $config[cf_memo_send_point], "쪽지5 친구찾기 - $sname", '친구찾기', $g4[time_ymdhis], '쪽지5');
-
     $sql = " select count(*) as cnt from $g4[member_table] where ( mb_leave_date = '' and mb_nick != '[삭제됨]' ) and ( $search_sql ) ";
     $result = sql_fetch($sql);
     $total_count = $result['cnt'];
+
+    // guess work을 막기 위해서 최대 결과값 갯수를 - 회원수 많은 사이트에서는 보안 때문에 필수
+    if ($total_count > $g4['memo_max_friend'] && $is_admin !== "super")
+        $total_count = $g4['memo_max_friend'];
 
     $one_rows = 10; // 한페이지의 라인수
     $total_page  = ceil($total_count / $one_rows);  // 전체 페이지 계산 
