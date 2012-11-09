@@ -5,6 +5,12 @@ include_once("$g4[path]/memo.config.php");
 if (!$is_member) 
     alert_close("회원만 접속가능한 화면 입니다");
 
+// 연속검색 방지
+$delay = $_SESSION['ss_friend'] - $g4['server_time'] + $g4['memo_delay_friend'];
+if ($delay > 0 && !$is_admin)
+    alert("너무 빠른 시간내에 친구찾기를 연속해서 할 수 없습니다.");
+set_session("ss_friend", $g4['server_time']);
+
 $sname = preg_replace('/\%/', '', strip_tags($sname));
 
 if ($sname) {
