@@ -595,6 +595,12 @@ function memo4_cancel($me_id) {
 
     global $g4, $member;
 
+    // $g4['memo_delete'] == 1, 무조건 지운다.
+    $memo_delete = "";
+    if ($g4['memo_delete']) {
+        $memo_delete = " and memo_owner='$member[mb_id]' ";
+    }
+
     // 발신 테이블에서, 정보를 가져 옵니다.
     $sql = " select * from $g4[memo_send_table] where me_id = '$me_id' ";
     $result = sql_fetch($sql);
@@ -603,12 +609,12 @@ function memo4_cancel($me_id) {
     if ($result[me_send_mb_id] !== $member[mb_id]) 
         alert("바르지 못한 사용입니다");
 
-    // trash에 쪽지를 넣어두기
-    $sql = "insert into $g4[memo_trash_table] select *, 'send' from $g4[memo_send_table] where me_id = '$me_id' and memo_owner='$member[mb_id]' and me_send_mb_id='$member[mb_id]'  ";
-    sql_query($sql);
+    // trash에 쪽지를 넣어두기 - 그냥 지워버리기 위해서.
+    $sql = "insert into $g4[memo_trash_table] select *, 'send' from $g4[memo_send_table] where me_id = '$me_id' and me_send_mb_id='$member[mb_id]' $memo_delete ";
+    sql_query($sql, FALSE);
 
     // 발신함을 삭제 합니다.
-    $sql = " delete from $g4[memo_send_table] where me_id = '$me_id' and memo_owner='$member[mb_id]' and me_send_mb_id = '$member[mb_id]' ";
+    $sql = " delete from $g4[memo_send_table] where me_id = '$me_id' and me_send_mb_id = '$member[mb_id]' $memo_delete ";
     sql_query($sql);
 
     // 수신함의 쪽지를 읽지 않은 경우에는 삭제해버립니다 - 회수의 개념 입니다. 좀 황당은 하지만.
