@@ -108,7 +108,7 @@ $g4['memo_max_friend'] = 100;
 // 친구관리를 빈번하게 수행하는 것을 막기 위해서
 $g4['memo_delay_friend'] = 2;
 
-// 춘구관리 검색을 할 때 차감하는 포인트
+// 친구관리 검색을 할 때 차감하는 포인트
 $g4['memo_friend_point'] = -1;
 
 // delete anyway - 다른 쪽지 때문에 삭제가 안될 때
