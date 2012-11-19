@@ -610,7 +610,23 @@ function memo4_cancel($me_id) {
         alert("바르지 못한 사용입니다");
 
     // trash에 쪽지를 넣어두기 - 그냥 지워버리기 위해서.
-    $sql = "insert into $g4[memo_trash_table] select *, 'send' from $g4[memo_send_table] where me_id = '$me_id' and me_send_mb_id='$member[mb_id]' $memo_delete ";
+    //$sql = "insert into $g4[memo_trash_table] select *, 'send' from $g4[memo_send_table] where me_id = '$me_id' and me_send_mb_id='$member[mb_id]' $memo_delete ";
+    $me = sql_fetch("select * from $g4[memo_send_table] where me_id = '$me_id' and me_send_mb_id='$member[mb_id]' $memo_delete ");
+    $sql = " insert into $g4[memo_trash_table]
+                set me_id = '$me[mb_id]',
+                    me_recv_mb_id = '$me[me_recv_mb_id]',
+                    me_send_mb_id = '$me[me_send_mb_id]',
+                    me_send_datetime = '$me[me_send_datetime]',
+                    me_read_datetime = '$me[me_read_datetime]',
+                    me_memo = '$me[me_memo]',
+                    me_file_local = '$me[me_file_local]',
+                    me_file_server = '$me[me_file_server]',
+                    me_subject = '$me[me_subject]',
+                    memo_type = '$me[memo_type]',
+                    memo_owner = '$member[mb_id]',
+                    me_option = '$me[me_option]',
+                    me_from_kind = 'send' 
+              where me_id = '$me_id' and me_send_mb_id='$member[mb_id]' $memo_delete 
     sql_query($sql, FALSE);
 
     // 발신함을 삭제 합니다.
