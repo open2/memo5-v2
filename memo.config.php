@@ -100,7 +100,7 @@ if (isset($kind)) {
 // mb_memo_unread             : 안읽은 메시지 갯수
 
 // 메모를 지정된 시간이 지나야 보낼 수 있게 설정 (스팸쪽지를 막기 위해서...)
-$g4['memo_delay_sec'] = 10;
+$g4['memo_delay_sec'] = 1;
 
 // 친구찾기 guess-work을 막기 위해서
 $g4['memo_max_friend'] = 100;
