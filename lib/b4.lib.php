@@ -641,7 +641,6 @@ function memo4_cancel($me_id) {
         // 쪽지 수신자의 쪽지함에서 읽지 않은 쪽지 갯수를 업데이트
         sql_query(" update $g4[member_table] set mb_memo_unread = mb_memo_unread - 1 where mb_id = '$result[me_recv_mb_id]' ");
 
-
         // 쪽지 알림에서 하나를 차감
         $mb = get_member($result[me_recv_mb_id], "mb_memo_call"); 
 
