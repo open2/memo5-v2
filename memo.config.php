@@ -1,9 +1,6 @@
 <?
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
 
-if (! $is_member)
-    alert("회원만 접속할 수 있는 페이지 입니다");
-
 // 쪽지 테이블
 $g4['memo_config_table']          = $g4['table_prefix'] . "memo_config";          // 메모 설정테이블
 
