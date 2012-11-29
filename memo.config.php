@@ -108,6 +108,6 @@ $g4['memo_delay_friend'] = 2;
 // 친구관리 검색을 할 때 차감하는 포인트
 $g4['memo_friend_point'] = -1;
 
-// delete anyway - 다른 쪽지 때문에 삭제가 안될 때
-$g4['memo_delete'] = 0;
+// delete anyway - 다른 쪽지 때문에 삭제가 안될 때는 false 또는 0으로 바꾸면 됩니다.
+$g4['memo_delete'] = 1;
 ?>
