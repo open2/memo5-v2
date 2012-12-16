@@ -613,7 +613,7 @@ function memo4_cancel($me_id) {
     //$sql = "insert into $g4[memo_trash_table] select *, 'send' from $g4[memo_send_table] where me_id = '$me_id' and me_send_mb_id='$member[mb_id]' $memo_delete ";
     $me = sql_fetch("select * from $g4[memo_send_table] where me_id = '$me_id' and me_send_mb_id='$member[mb_id]' $memo_delete ");
     $sql = " insert into $g4[memo_trash_table]
-                set me_id = '$me[mb_id]',
+                set me_id = '$me[me_id]',
                     me_recv_mb_id = '$me[me_recv_mb_id]',
                     me_send_mb_id = '$me[me_send_mb_id]',
                     me_send_datetime = '$me[me_send_datetime]',
@@ -625,8 +625,7 @@ function memo4_cancel($me_id) {
                     memo_type = '$me[memo_type]',
                     memo_owner = '$member[mb_id]',
                     me_option = '$me[me_option]',
-                    me_from_kind = 'send' 
-              where me_id = '$me_id' and me_send_mb_id='$member[mb_id]' $memo_delete ";
+                    me_from_kind = 'send' ";
     sql_query($sql, FALSE);
 
     // 발신함을 삭제 합니다.
@@ -864,6 +863,10 @@ function db_cache($c_name, $seconds=300, $c_code) {
         // 새로운 캐쉬값을 만들고
         $c_text = call_user_func_array($func_name, $func_args);
         }
+
+        // 값이 없으면 그냥 return
+        if (trim($c_text) == "")
+            return;
 
         // db에 넣기전에 slashes들을 앞에 싹 붙여 주시고
         $c_text1 = addslashes($c_text);
