@@ -186,7 +186,7 @@ switch ($kind) {
                 $addr[] = $row;
             }
         }
-        
+
         foreach ($addr as $row) {
             $list[$row['mb_id']][$row['type']] = $row['cnt'];
             $list[$row['mb_id']]['mb_id'] = $row['mb_id'];
